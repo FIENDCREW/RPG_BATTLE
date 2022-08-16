@@ -1,4 +1,5 @@
 // Злодей Лютый
+
 const monster = {
   maxHealth: 100,
   name: "Лютый",
@@ -31,6 +32,7 @@ const monster = {
 };
 
 //Боевой маг Евстафий способен на следующее:
+
 const magician = {
   maxHealth: 100,
   name: "Евстафий",
@@ -84,7 +86,7 @@ if (!welcome) {
 } else {
   console.log("Евставий, ты храбрый маг, готовься к битве!");
   for (let i = 0; i < magician.moves.length; i++)
-    console.log("Твои навыки " + magician.moves[i].name);
+    console.log("Твои навык " + magician.moves[i].name);
   i += 3;
 }
 
@@ -109,7 +111,10 @@ while (i == 4) {
   if (!choice2) {
     i += 1;
   } else {
-    console.log("Ты атакуешь своим" + magician[moves]);
+    let readlineSync = require('readline-sync'),
+    index = readlineSync.keyInSelect(magician.moves.length);
+    for (let i = 0; i < magician.moves.length; i++)
+    console.log("Ты атакуешь своим" + magician.moves[index].name);
     i += 2;
   }
 }
