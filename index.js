@@ -1,7 +1,8 @@
-// Злодей Лютый
+const readlineSync = require("readline-sync");
 
+// Злодей Лютый
 const monster = {
-  maxHealth: 100,
+  maxHealth: 10,
   name: "Лютый",
   moves: [
     {
@@ -32,9 +33,8 @@ const monster = {
 };
 
 //Боевой маг Евстафий способен на следующее:
-
 const magician = {
-  maxHealth: 100,
+  maxHealth: 10,
   name: "Евстафий",
   moves: [
     {
@@ -72,55 +72,178 @@ const magician = {
   ],
 };
 
-const readlineSync = require("readline-sync");
-i = 0;
-const welcome = readlineSync.keyInYN(
-  "Лютый приближается. Хватит ли у тебя смелости, чтобы сразиться с ним?"
+const getRandom = (min, max) => {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+console.log(
+  "Лютый приближается. Хватит ли у тебя смелости, чтобы сразиться с ним? \n1. Да\n2. Нет"
 );
 
-if (!welcome) {
-  console.log(
-    "Ты со страхом уносишь ноги, но Лютый все равно уничтодает тебя!"
-  );
-  i += 2;
+let welcome = readlineSync.question("->");
+welcome = parseInt(welcome);
+if (welcome === 2) {
+  console.log("Ты со страхом уносишь ноги, но тебе не удастся уйти от Лютого!");
 } else {
   console.log("Евставий, ты храбрый маг, готовься к битве!");
   for (let i = 0; i < magician.moves.length; i++)
-    console.log("Твои навык " + magician.moves[i].name);
-  i += 3;
+    console.log("Твой навык " + magician.moves[i].name);
 }
 
-while (i == 2) {
-  i += 5;
-}
+const game = () => {
+  let number;
+  let health;
+  let monsterCooldownOne = 0;
+  let monsterCooldownTwo = 0;
+  let magicianCooldownOne = 0;
+  let magicianCooldownTwo = 0;
+  let magicianCooldownThree = 0;
 
-while (i == 3) {
-  const choice = readlineSync.keyInYN("Ты атакуешь сразу?");
+  console.log("Начальное здоровье равно 10. Хотите изменить?\n1. Да\n2. Нет");
+  number = readlineSync.question("-> ");
+  number = parseInt(number);
 
-  if (!choice) {
-    console.log("Дракон кричит, его брюхо обнажено!");
-    i += 1;
-  } else {
-    console.log("Дракон видит, что ты атакуешь, и сжигает тебя дотла!");
-    i += 4;
+  if (number === 1) {
+    console.log("\n\nВведите начальное здоровье");
+    health = readlineSync.question("-> ");
+
+    monster.maxHealth = health;
+    magician.maxHealth = health;
   }
-}
 
-while (i == 4) {
-  const choice2 = readlineSync.keyInYN("Ты атакуешь своим ");
-  if (!choice2) {
-    i += 1;
-  } else {
-    let readlineSync = require('readline-sync'),
-    index = readlineSync.keyInSelect(magician.moves.length);
-    for (let i = 0; i < magician.moves.length; i++)
-    console.log("Ты атакуешь своим" + magician.moves[index].name);
-    i += 2;
+  while (monster.maxHealth > 0 && magician.maxHealth > 0) {
+    let randomNumber;
+    let numberMagiciac;
+
+    do {
+      randomNumber = getRandom(0, 2);
+    } while (
+      (randomNumber === 1 &&
+        monsterCooldownOne > 0 &&
+        monsterCooldownOne < 3) ||
+      (randomNumber === 2 && monsterCooldownTwo > 0 && monsterCooldownTwo < 2)
+    );
+
+    if (monsterCooldownOne > 0 && monsterCooldownOne < 3) {
+      monsterCooldownOne++;
+    } else if (monsterCooldownOne === 3) {
+      monsterCooldownOne = 0;
+    }
+
+    if (monsterCooldownTwo > 0 && monsterCooldownTwo < 2) {
+      monsterCooldownTwo++;
+    } else if (monsterCooldownTwo === 2) {
+      monsterCooldownTwo = 0;
+    }
+
+    switch (randomNumber) {
+      case 1:
+        if (monsterCooldownTwo === 0) {
+          monsterCooldownTwo++;
+        }
+        break;
+      case 2:
+        if (monsterCooldownTwo === 0) {
+          monsterCooldownTwo++;
+        }
+        break;
+      default:
+        break;
+    }
+
+    console.log("\n\nДействие Лютого: " + monster.moves[randomNumber].name);
+
+    console.log(
+      "\nВыберите действие:\n1. Удар боевым кадилом;\n2. Вертушка левой пяткой;\n3. Каноничный фаербол;\n4. Магический блок."
+    );
+
+    numberMagiciac = readlineSync.question("-> ");
+    numberMagiciac = parseInt(numberMagiciac);
+
+    while (
+      (numberMagiciac === 2 &&
+        magicianCooldownOne > 0 &&
+        magicianCooldownOne < 4) ||
+      (numberMagiciac === 3 &&
+        magicianCooldownTwo > 0 &&
+        magicianCooldownTwo < 3) ||
+      (numberMagiciac === 4 &&
+        magicianCooldownThree > 0 &&
+        magicianCooldownThree < 4)
+    ) {
+      console.log("\nВы пока еще не можете выбрать это действие.");
+      numberMagiciac = readlineSync.question("-> ");
+      numberMagiciac = parseInt(numberMagiciac);
+    }
+
+    if (magicianCooldownOne > 0 && magicianCooldownOne < 4) {
+      magicianCooldownOne++;
+    } else if (magicianCooldownOne === 4) {
+      magicianCooldownOne = 0;
+    }
+
+    if (magicianCooldownTwo > 0 && magicianCooldownTwo < 3) {
+      magicianCooldownTwo++;
+    } else if (magicianCooldownTwo === 3) {
+      magicianCooldownTwo = 0;
+    }
+
+    if (magicianCooldownThree > 0 && magicianCooldownThree < 4) {
+      magicianCooldownThree++;
+    } else if (magicianCooldownThree === 4) {
+      magicianCooldownThree = 0;
+    }
+
+    switch (numberMagiciac - 1) {
+      case 1:
+        if (magicianCooldownOne === 0) {
+          magicianCooldownOne++;
+        }
+        break;
+      case 2:
+        if (magicianCooldownTwo === 0) {
+          magicianCooldownTwo++;
+        }
+        break;
+      case 3:
+        if (magicianCooldownTwo === 0) {
+          magicianCooldownTwo++;
+        }
+        break;
+      default:
+        break;
+    }
+
+    magician.maxHealth =
+      magician.maxHealth -
+      (monster.moves[randomNumber].physicalDmg -
+        (magician.moves[numberMagiciac - 1].physicArmorPercents / 100) *
+          monster.moves[randomNumber].physicalDmg) -
+      (monster.moves[randomNumber].magicDmg -
+        (magician.moves[numberMagiciac - 1].magicArmorPercents / 100) *
+          monster.moves[randomNumber].magicDmg);
+    monster.maxHealth =
+      monster.maxHealth -
+      (magician.moves[numberMagiciac - 1].physicalDmg -
+        (monster.moves[randomNumber].physicArmorPercents / 100) *
+          magician.moves[numberMagiciac - 1].physicalDmg) -
+      (magician.moves[numberMagiciac - 1].magicDmg -
+        (monster.moves[randomNumber].magicArmorPercents / 100) *
+          magician.moves[numberMagiciac - 1].magicDmg);
+
+    if (magician.maxHealth > 0) {
+      console.log("\nВаше здоровье: " + magician.maxHealth.toFixed(1));
+    }
+    if (monster.maxHealth > 0) {
+      console.log("Здоровье Лютого: " + monster.maxHealth.toFixed(1));
+    }
   }
-}
 
-if (i == 7) {
-  console.log("Ты проиграл!");
-} else {
-  console.log("Ты победил дракона!");
-}
+  if (monster.maxHealth < magician.maxHealth) {
+    console.log("\n\nВы выиграли!");
+  } else {
+    console.log("\n\nВы проиграли.");
+  }
+};
+
+game();
