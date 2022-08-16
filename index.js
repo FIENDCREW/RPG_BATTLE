@@ -1,3 +1,4 @@
+// Злодей Лютый
 const monster = {
   maxHealth: 100,
   name: "Лютый",
@@ -68,3 +69,53 @@ const magician = {
     },
   ],
 };
+
+const readlineSync = require("readline-sync");
+i = 0;
+const welcome = readlineSync.keyInYN(
+  "Лютый приближается. Хватит ли у тебя смелости, чтобы сразиться с ним?"
+);
+
+if (!welcome) {
+  console.log(
+    "Ты со страхом уносишь ноги, но Лютый все равно уничтодает тебя!"
+  );
+  i += 2;
+} else {
+  console.log("Евставий, ты храбрый маг, готовься к битве!");
+  for (let i = 0; i < magician.moves.length; i++)
+    console.log("Твои навыки " + magician.moves[i].name);
+  i += 3;
+}
+
+while (i == 2) {
+  i += 5;
+}
+
+while (i == 3) {
+  const choice = readlineSync.keyInYN("Ты атакуешь сразу?");
+
+  if (!choice) {
+    console.log("Дракон кричит, его брюхо обнажено!");
+    i += 1;
+  } else {
+    console.log("Дракон видит, что ты атакуешь, и сжигает тебя дотла!");
+    i += 4;
+  }
+}
+
+while (i == 4) {
+  const choice2 = readlineSync.keyInYN("Ты атакуешь своим ");
+  if (!choice2) {
+    i += 1;
+  } else {
+    console.log("Ты атакуешь своим" + magician[moves]);
+    i += 2;
+  }
+}
+
+if (i == 7) {
+  console.log("Ты проиграл!");
+} else {
+  console.log("Ты победил дракона!");
+}
